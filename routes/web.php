@@ -2,6 +2,13 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\TvShowController;
+use App\Http\Controllers\SeasonController;
+use App\Http\Controllers\EpisodeController;
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\CastController;
+use App\Http\Controllers\TagController;
 use Inertia\Inertia;
 
 /*
@@ -25,16 +32,25 @@ Route::get('/', function () {
 });
 
 
-Route::get('/admin', function (){
-    return Inertia::render('Admin/Index');
+Route::middleware(['auth:sanctum', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function (){return Inertia::render('Admin/Index');})->name('index');
+    Route::resource('/movie', MovieController::class);
+    Route::resource('/tv-shows', TvShowController::class);
+    Route::resource('/tv-shows/{tv-show}/seasons', SeasonController::class);
+    Route::resource('/tv-shows/{tv-show}/seasons/{season}/episodes', EpisodeController::class);
+    Route::resource('/genres', GenreController::class);
+    Route::resource('/casts', CastController::class);
+    Route::resource('/tags', TagController::class);
 });
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        auth()->user()->assignRole('admin');
+        // auth()->user()->assignRole('admin');
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
