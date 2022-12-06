@@ -2,13 +2,13 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MovieController;
-use App\Http\Controllers\TvShowController;
-use App\Http\Controllers\SeasonController;
-use App\Http\Controllers\EpisodeController;
-use App\Http\Controllers\GenreController;
-use App\Http\Controllers\CastController;
-use App\Http\Controllers\TagController;
+use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\TvShowController;
+use App\Http\Controllers\Admin\SeasonController;
+use App\Http\Controllers\Admin\EpisodeController;
+use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\CastController;
+use App\Http\Controllers\Admin\TagController;
 use Inertia\Inertia;
 
 /*
