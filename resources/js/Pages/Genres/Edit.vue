@@ -1,7 +1,7 @@
 <template>
-    <admin-layout title="Update Tag">
-         <!-- Breadcrumb -->
-         <nav class="flex justify-end px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+    <admin-layout title="Update Cast">
+        <!-- Breadcrumb -->
+        <nav class="flex justify-end px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
             aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
@@ -25,7 +25,7 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         <a href="#"
-                            class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Tag</a>
+                            class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Genre</a>
                     </div>
                 </li>
             </ol>
@@ -36,20 +36,22 @@
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
                     <div class="overflow-x-auto relative shadow-md sm:rounded-lg p-4">
-                        <form @submit.prevent="updateTage">
-                            <div class="mb-12">
-                                <label for="Tage"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tage
-                                    Name</label>
-                                <input v-model="form.tagName" type="text" id="text"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    required>
-                            </div>
-                            <div class="text-right sm:px-1">
-                                <button type="submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                        <form @submit.prevent="updateGenre" class="p-4">
+                            <div>
+                                <InputLabel for="title" value="Title" />
+                                <TextInput id="title" type="text" class="mt-1 block w-full" v-model="form.title" autofocus
+                                    autocomplete="title" />
+                                <InputError class="mt-2" :message="$page.props.errors.title" />
                             </div>
 
+
+
+                            <div class="flex items-center justify-end mt-4">
+                                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }"
+                                    :disabled="form.processing">
+                                    Update
+                                </PrimaryButton>
+                            </div>
                         </form>
 
                     </div>
@@ -61,19 +63,24 @@
 </template>
 
 <script setup>
-import AdminLayout from '../../Layouts/AdminLayout.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { defineProps } from "vue";
+import AdminLayout from "../../Layouts/AdminLayout.vue";
+import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { ref, watch, defineProps } from "vue";
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import { Inertia } from "@inertiajs/inertia";
 
 const props = defineProps({
-    tag: Object,
+    genre: Object,
 });
 
 const form = useForm({
-    tagName: props.tag.tag_name,
-})
+    title: props.genre.title,
+});
 
-const updateTage = () =>{
-    form.put("/admin/tags/" + props.tag.id);
+const updateGenre = () => {
+    form.put("/admin/genres/" + props.genre.id);
 }
 </script>
