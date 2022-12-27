@@ -1,14 +1,21 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\MovieController;
-use App\Http\Controllers\Admin\TvShowController;
-use App\Http\Controllers\Admin\SeasonController;
+use App\Http\Controllers\Admin\CastController;
 use App\Http\Controllers\Admin\EpisodeController;
 use App\Http\Controllers\Admin\GenreController;
-use App\Http\Controllers\Admin\CastController;
+use App\Http\Controllers\Admin\MovieAttachController;
+use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\SeasonController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\TvShowController;
+use App\Http\Controllers\Frontend\CastController as FrontendCastController;
+use App\Http\Controllers\Frontend\GenreController as FrontendGenreController;
+use App\Http\Controllers\Frontend\MovieController as FrontendMovieController;
+use App\Http\Controllers\Frontend\TagController as FrontendTagController;
+use App\Http\Controllers\Frontend\TvShowController as FrontendTvShowController;
+use App\Http\Controllers\Frontend\WelcomeController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 /*
@@ -36,8 +43,8 @@ Route::middleware(['auth:sanctum', 'verified', 'role:admin'])->prefix('admin')->
     Route::get('/', function (){return Inertia::render('Admin/Index');})->name('index');
     Route::resource('/movie', MovieController::class);
     Route::resource('/tv-shows', TvShowController::class);
-    Route::resource('/tv-shows/{tv-show}/seasons', SeasonController::class);
-    Route::resource('/tv-shows/{tv-show}/seasons/{season}/episodes', EpisodeController::class);
+    Route::resource('/tv-shows/{tv_show}/seasons', SeasonController::class);
+    Route::resource('/tv-shows/{tv_show}/seasons/{season}/episodes', EpisodeController::class);
     Route::resource('/genres', GenreController::class);
     Route::resource('/casts', CastController::class);
     Route::resource('/tags', TagController::class);
