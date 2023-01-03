@@ -42,6 +42,19 @@
                         </a>
                     </div>
                 </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <a href="#"
+                            class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Episode
+                        </a>
+                    </div>
+                </li>
             </ol>
         </nav>
 
@@ -56,16 +69,16 @@
                                 <div>
                                     <form>
                                         <div class="relative">
-                                            <input v-model="seasonNumber" id="default-search"
+                                            <input v-model="episodeNumber" id="default-search"
                                                 class="w-80 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                                placeholder="Season No" required>
-                                            <button type="button" @click="generateSeason"
+                                                placeholder="Episode No" required>
+                                            <button type="button" @click="generateEpisode"
                                                 class="text-white absolute right-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Generate</button>
                                         </div>
                                     </form>
                                 </div>
                                 <div>
-                                    <select v-model="perPage" @change="getSeasons" id="countries"
+                                    <select v-model="perPage" @change="getEpisodes" id="countries"
                                         class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                         <option value="5">5 Per Page</option>
                                         <option value="10">10 Per Page</option>
@@ -105,10 +118,10 @@
                                         Slug
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        Season
+                                        Episode
                                     </th>
                                     <th scope="col" class="py-3 px-6">
-                                        Poster
+                                        Public
                                     </th>
                                     <th scope="col" class="py-3 px-6">
                                         Action
@@ -116,35 +129,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="season in seasons.data" :key="season.id"
+                                <tr v-for="episode in episodes.data" :key="episode.id"
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="py-4 px-6">{{ season.id }}</td>
+                                    <td class="py-4 px-6">{{ episode.id }}</td>
                                     <td class="py-4 px-6">
-                                        {{ season.name }}
+                                        {{ episode.name }}
                                     </td>
                                     <td class="py-4 px-6">
-                                        {{ season.slug }}
+                                        {{ episode.slug }}
                                     </td>
                                     <td class="py-4 px-6">
-                                        {{ season.season_number }}
+                                        {{ episode.episode_number }}
                                     </td>
                                     <td class="py-4 px-6">
-                                        {{ season.poster_path }}
+                                        <span v-if="episode.is_public"
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Published
+                                        </span>
+                                        <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            UnPublished
+                                        </span>
+
                                     </td>
                                     <td class="flex py-4 px-6">
-                                        <Link :href="route('admin.episodes.index', [tvShow.id,season.id])">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-                                        </svg>
 
-
-                                        </Link>
-
-                                        <Link :href="route('admin.seasons.edit',[tvShow.id,season.id])">
+                                        <Link :href="route('admin.episodes.edit', [tvShow.id, season.id, episode.id])">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -152,8 +161,8 @@
                                             </path>
                                         </svg>
                                         </Link>
-                                        <Link :href="route('admin.seasons.destroy',[tvShow.id,season.id])" method="delete"
-                                            as="button" type="button">
+                                        <Link :href="route('admin.episodes.destroy', [tvShow.id, season.id, episode.id])"
+                                            method="delete" as="button" type="button">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -167,7 +176,7 @@
                             </tbody>
                         </table>
                         <div class="m-2 p-2">
-                            <Pagination :links="seasons.links" />
+                            <Pagination :links="episodes.links" />
                         </div>
                     </div>
 
@@ -178,25 +187,26 @@
 </template>
 
 <script setup>
-import AdminLayout from "../../../Layouts/AdminLayout.vue";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Link } from "@inertiajs/inertia-vue3";
-import Pagination from "../../../Components/Pagination.vue";
+import Pagination from "@/Components/Pagination.vue";
 import { ref, watch, defineProps } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 
 const props = defineProps({
-    seasons: Object,
+    season: Object,
     tvShow: Object,
     filters: Object,
+    episodes: Object,
 });
 
 const search = ref(props.filters.search);
 const perPage = ref(props.filters.perPage);
-const seasonNumber = ref("");
+const episodeNumber = ref("");
 
 watch(search, (value) => {
     Inertia.get(
-        `/admin/tv-shows/${props.tvShow.id}/seasons`,
+        `/admin/tv-shows/${props.tvShow.id}/seasons/${props.season.id}/episodes`,
         { search: value, perPage: perPage.value },
         {
             preserveState: true,
@@ -205,9 +215,9 @@ watch(search, (value) => {
     );
 });
 
-function getSeasons() {
+function getEpisodes() {
     Inertia.get(
-        `/admin/tv-shows/${props.tvShow.id}/seasons`,
+        `/admin/tv-shows/${props.tvShow.id}/seasons/${props.season.id}/episodes`,
         { perPage: perPage.value, search: search.value },
         {
             preserveState: true,
@@ -216,12 +226,12 @@ function getSeasons() {
     );
 }
 
-function generateSeason() {
+function generateEpisode() {
     Inertia.post(
-        `/admin/tv-shows/${props.tvShow.id}/seasons`,
-        { seasonNumber: seasonNumber.value },
+        `/admin/tv-shows/${props.tvShow.id}/seasons/${props.season.id}/episodes`,
+        { episodeNumber: episodeNumber.value },
         {
-            onFinish: () => (seasonNumber.value = ""),
+            onFinish: () => (episodeNumber.value = ""),
         }
     );
 }
