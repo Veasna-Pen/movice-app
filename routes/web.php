@@ -41,7 +41,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', function (){return Inertia::render('Admin/Index');})->name('index');
-    Route::resource('/movie', MovieController::class);
+    Route::resource('/movies', MovieController::class);
     Route::resource('/tv-shows', TvShowController::class);
     Route::resource('/tv-shows/{tv_show}/seasons', SeasonController::class);
     Route::resource('/tv-shows/{tv_show}/seasons/{season}/episodes', EpisodeController::class);
